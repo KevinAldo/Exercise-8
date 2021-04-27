@@ -1,7 +1,6 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
-import { SignIn, SplashScreen } from '../pages';
-// import { StyleSheet, Text, View } from 'react-native'
+import { SignIn, SignUp, SplashScreen } from '../pages';
 
 const Stack = createStackNavigator();
 const Router = () => {
@@ -15,10 +14,12 @@ const Router = () => {
             name="SignIn" 
             component={SignIn} 
             options={{headerShown: false}}/>
+          <Stack.Screen
+            name="SignUp" 
+            component={SignUp} 
+            options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 };
 
 export default Router;
-
-// const styles = StyleSheet.create({})
