@@ -1,17 +1,46 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, {useState} from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import {Button, Gap, Header, TextInput} from '../../component';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {showMessage} from "react-native-flash-message";
 
 const SignUp = ({navigation}) => {
+    const [photo, setPhoto] = useState('');
+    const [hasPhoto, setHasPhoto] = useState(false);
+    const getImage = () => {
+        launchImageLibrary(
+            {maxHeight: 200, maxWidth: 200, includeBase64: true}, res => {
+            if (res.didCancel){
+                setHasPhoto(false);
+                showMessage({
+                    message: "Upload foto dibatalkan",
+                    type: "default",
+                    backgroundColor: "#D9435E", // background color
+                    color: "white", // text color
+                  });
+            }else{
+                setPhoto(res.uri);
+                setHasPhoto(true);
+            }
+
+        });
+    };
     return (
         <View style={styles.page}>
             <Header title="Sign Up" onBack={() => navigation.goBack()}/>
             <View style={styles.contentWrapper}>
                 <View style={styles.photo}>
                     <View style={styles.border}>
-                        <View style={styles.addPhoto}>
-                            <Text style={styles.addText}>Add Photo</Text>
-                        </View>
+                        <TouchableOpacity onPress={getImage} activeOpacity={0.7}>
+                            {hasPhoto &&
+                                <Image source={{uri: photo}} style={styles.pict}/>
+                            }
+                            {!hasPhoto && (
+                              <View style={styles.addPhoto}>
+                                <Text style={styles.addText}>Add Photo</Text>
+                              </View>
+                            )}                        
+                        </TouchableOpacity>
                     </View>
                 </View>
                <TextInput title="Full Name" placeholder="Type your full name"/>
@@ -51,6 +80,11 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Light',
         maxWidth: 40,
         textAlign: 'center',
+    },
+    pict: {
+        height: 90,
+        width: 90,
+        borderRadius: 90,
     },
     border: {
         borderWidth: 1,
