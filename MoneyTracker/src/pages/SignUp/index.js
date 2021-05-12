@@ -35,30 +35,39 @@ const SignUp = ({navigation}) => {
     };
 
     const onSubmit = () => {
-       firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(res => {
-            const uid = res.user.uid;
-            const data = {
-                fullName: fullName,
-                email: email,
-                photo: photoBase64,
-            };
-            firebase.database().ref(`users/${uid}`).set(data);
-            setFullName('');
-            setEmail('');
-            setPassword('');
-            navigation.navigate('SignIn');
-        })
-        .catch(error => {
-          showMessage({
-            message: error.message,
-            type: 'default',
-            backgroundColor: '#D9435E', // background color
-            color: 'white', // text color
+        if (fullName === '' || email === '' || password === '') {
+            showMessage({
+              message: 'Please complete the form',
+              type: 'default',
+              backgroundColor: '#D9435E', // background color
+              color: 'white', // text color
             });
-        });
+          } else {
+            firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(res => {
+                const uid = res.user.uid;
+                const data = {
+                    fullName: fullName,
+                    email: email,
+                    photo: photoBase64,
+                };
+                firebase.database().ref(`users/${uid}`).set(data);
+                setFullName('');
+                setEmail('');
+                setPassword('');
+                navigation.navigate('SignIn');
+            })
+            .catch(error => {
+              showMessage({
+                message: error.message,
+                type: 'default',
+                backgroundColor: '#D9435E', // background color
+                color: 'white', // text color
+                });
+            });
+          }
     };
 
     return (
@@ -80,6 +89,7 @@ const SignUp = ({navigation}) => {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <Gap height={16} />
                     <TextInput title="Full Name" 
                     placeholder="Type your full name"
                     value={fullName}
@@ -113,7 +123,7 @@ const styles = StyleSheet.create({
     contentWrapper: {
         flex: 1,
         backgroundColor: 'white',
-        marginTop: 24,
+        paddingTop: 26,
         paddingHorizontal: 24,
     },
     addPhoto: {

@@ -13,7 +13,6 @@ const Header = ({title, onBack}) => {
                 </View>
               </TouchableOpacity>
             )} 
-            
             <Gap width={26}/>
             <Text style={styles.text}>{title}</Text>
         </View>
@@ -26,6 +25,7 @@ const styles = StyleSheet.create({
     container:{
         paddingLeft: 24,
         paddingVertical: 28,
+        marginBottom: 24,
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Medium',
     },
     back: {
-        padding: 12,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
     },
 })
